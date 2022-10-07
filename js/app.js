@@ -45,21 +45,29 @@ function mostrarAlerta(mensaje) {
     }
 }
 
-function buscarImagenes() {
+async function buscarImagenes() {
     const termino = document.querySelector('#termino').value;
 
     const key = '30268185-2107f2489f1e7532511d5a664';
     url = `https://pixabay.com/api/?key=${key}&q=${termino}&per_page=${registrosPorPagina}&page=${paginaActual}`;
     // console.log(url);
     
-    fetch(url)
-        .then(respuesta => respuesta.json())
-        .then(resultado => {
-            console.log(resultado);
-            totalPaginas = calcularPaginas(resultado.totalHits);
-            // console.log(totalPaginas);
-            mostrarImagenes(resultado.hits);
-        })
+    // fetch(url)
+    //     .then(respuesta => respuesta.json())
+    //     .then(resultado => {
+    //         console.log(resultado);
+    //         totalPaginas = calcularPaginas(resultado.totalHits);
+    //         // console.log(totalPaginas);
+    //         mostrarImagenes(resultado.hits);
+    //     })
+    try {
+        const respuesta = await fetch(url)
+        const resultado = await respuesta.json();
+        totalPaginas = calcularPaginas(resultado.totalHits);
+        mostrarImagenes(resultado.hits);
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 // Generador que va a registrar la cantidad de eleminetos de acuerdo a las paginas
